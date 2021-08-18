@@ -23,6 +23,7 @@ func NewConsoleLogger(name string) *Logger {
 			),
 			zapcore.InfoLevel,
 		),
+		zap.AddCaller(),
 	)
 	logger = logger.Named(name)
 	return &Logger{
@@ -42,6 +43,7 @@ func NewFileLogger(name string, path string) *Logger {
 			),
 			zapcore.InfoLevel,
 		),
+		zap.AddCaller(),
 	)
 	logger = logger.Named(name)
 	return &Logger{
