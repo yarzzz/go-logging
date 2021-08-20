@@ -50,3 +50,22 @@ func NewFileLogger(name string, path string) *Logger {
 		SugaredLogger: logger.Sugar(),
 	}
 }
+
+func NewDebugLogger(name string) *Logger {
+	encoderConfig := zap.NewProductionEncoderConfig()
+	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.RFC3339)
+	logger := zap.New(
+		zapcore.NewCore(
+			zapcore.NewConsoleEncoder(encoderConfig),
+			zap.CombineWriteSyncers(
+				zapcore.AddSync(os.Stdout),
+			),
+			zapcore.DebugLevel,
+		),
+		zap.AddCaller(),
+	)
+	logger = logger.Named(name)
+	return &Logger{
+		SugaredLogger: logger.Sugar(),
+	}
+}
